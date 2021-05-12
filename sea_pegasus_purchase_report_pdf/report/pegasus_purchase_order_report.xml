@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_pegasusorder_document">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-set="colclass" t-value="('col-md-5' if report_type == 'html' else 'col-5') + ' ml-auto'"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="row">
+                        <div class="col-3 mb4">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 110px;"
+                                 alt="Logo"/>
+                        </div>
+                        <!--<div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>-->
+                        <div class="col-9 text-right">
+                            <h5 class="text-right" style="color: #000066; margin-right: 24px">
+                                <strong>PURCHASE ORDER</strong>
+                            </h5>
+                            <div class="col-7" style="float: right;">
+                                <div class="row">
+                                    <div class="col-4 text-right">PO Number:</div>
+                                    <div class="col-3">
+                                        <span t-field="o.name"/>
+                                    </div>
+                                    <div class="col-2 text-right">Date:</div>
+                                    <div class="col-3" t-field="o.date_order" t-options='{"format": "dd-MMM-yy"}'/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 text-right">No.:</div>
+                                    <div class="col-3">
+                                        <span t-field="o.name"/>
+                                    </div>
+                                    <div class="col-2 text-right">Date:</div>
+                                    <div class="col-3" t-field="o.date_order" t-options='{"format": "dd-MMM-yy"}'/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 text-right">Total of pages:</div>
+                                    <div class="col-3">
+                                        <!--  <span t-field="doc.name"/>-->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br/>
+
+                    <table class="custom-table-address">
+                        <tr>
+                            <th>TO:</th>
+                            <td colspan="3">
+                                <b>
+                                    <span t-field="o.partner_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td colspan="3">
+                                <b>
+                                    <span t-field="o.partner_id.street"/>
+                                    -
+                                    <span t-field="o.partner_id.city"/>
+                                    -
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Tel:</th>
+                            <td>
+                                <t t-if="o.partner_id.type == company">
+                                    <span t-field="o.partner_id.phone"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="o.partner_id.parent_id.phone"/>
+                                </t>
+                            </td>
+                            <th>Fax:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td colspan="3">
+                                <span t-field="o.partner_id.email"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Attn:</th>
+                            <td>
+                                <span t-field="o.partner_id.parent_id.name"/>
+                            </td>
+                            <th>Pos:</th>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <br/>
+
+                    <table class="custom-table-address">
+                        <tr>
+                            <th>FROM:</th>
+                            <td colspan="3" style="border-right: 1px solid #cccccc;">
+                                <b>
+                                    <span t-field="user.company_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td colspan="3" style="border-right: 1px solid #cccccc;">
+                                <b>
+                                    <span t-field="user.company_id.street"/>
+                                    -
+                                    <span t-field="user.company_id.city"/>
+                                    -
+                                    <span t-field="user.company_id.country_id.name"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Tel:</th>
+                            <td>
+                                <span t-field="user.company_id.phone"/>
+                            </td>
+                            <th>Fax:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>
+                                <span t-field="user.partner_id.email"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>P.I.C:</th>
+                            <td>
+                                <span t-field="user.partner_id.name"/>
+                            </td>
+                            <th>Pos:</th>
+                            <td></td>
+                        </tr>
+                    </table>
+
+
+                    <link rel="stylesheet" href="seatek_sale_order_delivery_note/static/src/css/font.css"/>
+                    <style type="text/css">
+                        html *{
+                        font-family: "Times" !important;
+                        }
+                        table, ul, p, div{
+                        font-size: 13px;
+                        }
+                        .custom-table-address, .custom-table-line{
+                        width: 100%;
+                        border-collapse: collapse;
+                        border: 1px solid #cccccc;
+                        }
+                        tr {
+                        border-bottom: 1px solid #cccccc;
+                        }
+                        .custom-table-address tr th:first-child {
+                        width: 58px;
+                        }
+
+                        .custom-table-address tr th:nth-child(3) {
+                        width: 56px;
+                        text-align: right;
+                        }
+
+                        .custom-table-address td:nth-child(4){
+                        width: 324px;
+                        }
+                        tr:last-child {
+                        border-bottom: 0px;
+                        }
+                        td, th {
+                        border-right: 1px solid #cccccc;
+                        padding: 3px;
+                        vertical-align: middle;
+                        }
+                        tr td:last-child, th:last-child {
+                        border-right: 0px;
+                        }
+                        .custom-table-line th{
+                        text-align:center;
+                        vertical-align: middle;
+                        }
+                        .custom-table-line thead tr:first-child th:first-child{
+                        width: 64px;
+                        }
+                    </style>
+
+                    <br/>
+                    <p style="margin: 0">Dear Sir/Madam,</p>
+                    <p style="margin: 0">As per our mutual agreement, please process our order as below:</p>
+                    <br/>
+                    <div class="page">
+                        <table class="custom-table-line">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="text-center" style="width:58px">Line's No</th>
+                                    <th colspan="2">Items</th>
+                                    <th rowspan="2" style="width:56px">Unit</th>
+                                    <th rowspan="2" style="width:64px">Qty</th>
+                                    <th rowspan="2" style="width:86px">Unit Price</th>
+                                    <th rowspan="2" style="width:87px">Line's Value</th>
+                                    <th rowspan="2" style="width:87px">Remarks</th>
+                                </tr>
+                                <tr style="border-bottom: 0px solid #cccccc;">
+                                    <th class="text-center" style="width:86px">Code</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="8" class="text-left">
+                                        Vessel Name
+                                        <span style="margin-left: 150px">Great Walrus</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+                        </table>
+                        <br/>
+
+                        <br/>
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #cccccc;">
+                            <tr>
+                                <td style="width:144px; vertical-align:top">Delivery Information:</td>
+                                <td style="border-left:none">
+                                    <p style="margin: 0">
+                                        <b>PEGASUS MARITIME &amp; DEVELOPMENT CORPORATION</b>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:144px; vertical-align:top">Invoice Information:</td>
+                                <td style="border-left:none">
+                                    <p style="margin: 0">
+                                        <b>PEGASUS MARITIME &amp; DEVELOPMENT CORPORATION</b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <p style="margin: 0">With many thanks and best regards,</p>
+                        <br/>
+
+                        <br/>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="width:144px; vertical-align:top">
+                                    <b>
+                                        <u>ORDER BY:</u>
+                                    </b>
+                                </td>
+                                <td style="width:144px; vertical-align:top">
+                                    <b>
+                                        <u>CHECKED BY:</u>
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </template>
+
+    <template id="report_pegasusorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="sea_pegasus_purchase_report_pdf.report_pegasusorder_document"
+                   t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

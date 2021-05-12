@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="sea_invoice_report_xls"
+        string="Invoice Export Excel"
+        model="account.invoice"
+        report_type="xlsx"
+        name="sea_invoice_xls.report_invoice_xls"
+        file="sea_invoice_xls.report_invoice_xls"
+    />
+</odoo>

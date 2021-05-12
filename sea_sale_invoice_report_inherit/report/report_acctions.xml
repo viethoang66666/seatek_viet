@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="sea_sale_invoice_report_inherit"
+            string="Phiếu xuất kho kiêm giao nhận hàng hóa mới"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="sea_sale_invoice_report_inherit.sea_sale_invoice_report_inherit_"
+            file="sea_sale_invoice_report_inherit.sea_sale_invoice_report_inherit_"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+       />
+    </data>
+</odoo>
